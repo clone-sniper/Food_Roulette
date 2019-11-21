@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Food_Roulette</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="places_api_key">AIzaSyCeJEYnu7nqBgcMz8K9RetpVIotoAfm_d8</string>
+</resources>
