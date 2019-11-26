@@ -2,4 +2,20 @@
     <string name="app_name">Food_Roulette</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="places_api_key">AIzaSyCeJEYnu7nqBgcMz8K9RetpVIotoAfm_d8</string>
+    <string name="title_activity_menu">Menu</string>
+
+    <string-array name="radius_size">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>7.5</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
+    <string-array name="price_limit">
+        <item>$</item>
+        <item>$$</item>
+        <item>$$$</item>
+        <item>$$$$</item>
+    </string-array>
 </resources>

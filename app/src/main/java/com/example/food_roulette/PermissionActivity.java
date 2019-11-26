@@ -21,7 +21,7 @@ public class PermissionActivity extends AppCompatActivity
         setContentView(R.layout.permissions);
         btngrant = findViewById(R.id.btn_permission);
         if (ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startActivity(new Intent(PermissionActivity.this, MapActivity.class));
+            startActivity(new Intent(PermissionActivity.this, StartMenu.class));
             finish();
             return;
         }
@@ -45,7 +45,7 @@ public class PermissionActivity extends AppCompatActivity
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                startActivity(new Intent(PermissionActivity.this, MapActivity.class));
+                startActivity(new Intent(PermissionActivity.this, StartMenu.class));
             }
         }
     }

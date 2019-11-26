@@ -9,6 +9,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -40,11 +43,11 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
     }
 
     @Override
-    protected void onPostExecute(String s)
+    protected void onPostExecute(String data)
     {
         List<HashMap<String, String>>  nearbyPlace = null;
         DataParser dataParser = new DataParser();
-        nearbyPlace = dataParser.parse(s);
+        nearbyPlace = dataParser.parse(data);
         RandomPlace(nearbyPlace);
     }
 
@@ -73,4 +76,39 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
         mark.showInfoWindow();
 
     }
+
+    //to be finished later so more 60 results show up instead of 20
+    /*
+    private void nextpage(String jsonData, List<HashMap<String, String>> listplace)
+    {
+        String pagetoken = "";
+        JSONObject jsonObject;
+
+        try
+        {
+            jsonObject = new JSONObject(jsonData);
+            pagetoken = jsonObject.getString("next_page_token");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        if(pagetoken != null)
+        {
+            RetrieveUrl retrieveUrl = new RetrieveUrl();
+            StringBuilder Url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+            Url.append("pagetoken="+pagetoken);
+            Url.append("&key=AIzaSyCeJEYnu7nqBgcMz8K9RetpVIotoAfm_d8");
+        }
+    }
+
+    private void nextPages(String data, List<HashMap<String, String>> listplace)
+    {
+        List<HashMap<String, String>>  nearbyPlace = null;
+        DataParser dataParser = new DataParser();
+        nearbyPlace = dataParser.parse(data);
+        for (int i = 0; i < nearbyPlace.size();i++)
+            listplace.add(nearbyPlace.get(i));
+    }
+*/
 }

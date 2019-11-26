@@ -19,11 +19,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,8 +37,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View mapview;
     private Button Randombtn;
     private final float DEFAULT_ZOOM= 18;
+    String url = "";
     String type = "restaurant";
-    int radius = 16000;
+    String filter = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,19 +47,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        Randombtn = findViewById(R.id.randomizer);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        mapview = mapFragment.getView();
-        current_location = LocationServices.getFusedLocationProviderClient(MapActivity.this);
 
+        current_location = LocationServices.getFusedLocationProviderClient(MapActivity.this);
+        filter = getIntent().getStringExtra("filter");
+
+        Randombtn = findViewById(R.id.randomizer);
         Randombtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                gmap.clear();
-               String url = getUrl(lastknown.getLatitude(), lastknown.getLongitude(), type);
+               url = getUrl(lastknown.getLatitude(), lastknown.getLongitude(), type, filter);
                Object dataTransfer[] = new Object[2];
                dataTransfer[0] = gmap;
                dataTransfer[1] = url;
@@ -131,53 +131,48 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @SuppressLint("MissingPermission")
     private void getDeviceLocation()
     {
-        current_location.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+        current_location.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>()
+        {
             @Override
             public void onComplete(@NonNull Task<Location> task)
             {
                 if(task.isSuccessful())
                 {
                     lastknown = task.getResult();
-                    if(lastknown != null)
-                    {
-                        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastknown.getLatitude(), lastknown.getLongitude()),DEFAULT_ZOOM));
-                    }
-                     else
-                    {
-                        LocationRequest locationRequest = LocationRequest.create();
-                        locationRequest.setInterval(10000);
-                        locationRequest.setFastestInterval(5000);
-                        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                        callback = new LocationCallback()
-                        {
-                            @Override
-                            public void onLocationResult(LocationResult locationResult) {
-                                super.onLocationResult(locationResult);
-                                if (locationResult == null)
-                                    return;
-                                lastknown = locationResult.getLastLocation();
-                                gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastknown.getLatitude(),lastknown.getLongitude()),DEFAULT_ZOOM));
-                                current_location.removeLocationUpdates(callback);
-                            }
-                        };
-                        current_location.requestLocationUpdates(locationRequest,callback, null);
-                    }
-                }
 
+                    LocationRequest locationRequest = LocationRequest.create();
+                    locationRequest.setInterval(10000);
+                    locationRequest.setFastestInterval(5000);
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    callback = new LocationCallback()
+                    {
+                        @Override
+                        public void onLocationResult(LocationResult locationResult)
+                        {
+                            super.onLocationResult(locationResult);
+                            if (locationResult == null)
+                                return;
+                            lastknown = locationResult.getLastLocation();
+                            current_location.removeLocationUpdates(callback);
+                        }
+                    };
+                    current_location.requestLocationUpdates(locationRequest,callback, null);
+                }
             }
         });
     }
 
-    private String getUrl(double lat, double lng, String type)
+    private String getUrl(double lat, double lng, String type, String filter)
     {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlaceUrl.append("location="+lat+","+lng);
-        googlePlaceUrl.append("&radius="+radius);
         googlePlaceUrl.append("&type="+type);
-        googlePlaceUrl.append("&maxprice="+2);
+        googlePlaceUrl.append(filter);
         googlePlaceUrl.append("&opennow=true");
         googlePlaceUrl.append("&key="+getString(R.string.places_api_key));
 
         return googlePlaceUrl.toString();
     }
+
+
 }
