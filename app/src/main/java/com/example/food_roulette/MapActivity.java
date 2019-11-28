@@ -16,6 +16,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap gmap;
     private Button Randombtn;
     private double lat, lng;
+    NearbyPlaces nearbyPlaces = new NearbyPlaces();
 
 
     String url = "";
@@ -43,12 +44,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-               gmap.clear();
-                NearbyPlaces nearbyPlaces = new NearbyPlaces();
-                Object dataTransfer[] = new Object[2];
-                dataTransfer[0] = gmap;
-                dataTransfer[1] = url;
-                nearbyPlaces.execute(dataTransfer);
+                nearbyPlaces.getnextRandom();
             }
         });
     }
@@ -59,6 +55,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     {
         gmap = googleMap;
         gmap.setMyLocationEnabled(true);
+
+        gmap.clear();
+        Object dataTransfer[] = new Object[2];
+        dataTransfer[0] = gmap;
+        dataTransfer[1] = url;
+        nearbyPlaces.execute(dataTransfer);
     }
 
 

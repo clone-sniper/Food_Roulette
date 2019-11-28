@@ -1,6 +1,5 @@
 package com.example.food_roulette;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,7 +12,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class NearbyPlaces  extends AsyncTask<Object, String, String>
@@ -52,29 +50,18 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
         nearbyPlace = dataParser.parse(data);
         num = random.nextInt(nearbyPlace.size());
         RandomPlace(nearbyPlace, num);
-
-        System.out.println("there are "+nearbyPlace.size() + " left");
+        nearbyPlace.remove(num);
     }
 
-/*
-    public void excecute(Object[] data)  {
-        DataParser dataParser = new DataParser();
-        gmap = (GoogleMap)data[0];
-        url = (String)data[1];
-        RetrieveUrl retrieveUrl = new RetrieveUrl();
-        try {
-            GooglePlaceData = retrieveUrl.readUrl(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        nearbyPlace = dataParser.parse(GooglePlaceData);
-        Random random= new Random();
-        int num = random.nextInt(nearbyPlace.size());
+    public void getnextRandom()
+    {
+        Random random = new Random();
+        int num;
+        num = random.nextInt(nearbyPlace.size());
         RandomPlace(nearbyPlace, num);
+        nearbyPlace.remove(num);
 
-        //System.out.println("there are "+nearbyPlace.size() + " left");
     }
-*/
 
     private void RandomPlace(List<HashMap<String, String>> nearbyPlaces, int num)
     {
