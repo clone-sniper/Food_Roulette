@@ -1,5 +1,8 @@
 package com.example.food_roulette;
 
+import android.os.AsyncTask;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +51,7 @@ public class RetrieveUrl
             inputStream.close();
             urlConnection.disconnect();
         }
+
         return data;
     }
-
 }

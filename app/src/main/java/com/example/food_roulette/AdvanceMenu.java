@@ -18,6 +18,9 @@ public class AdvanceMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.advance_menu);
 
+        double lat = getIntent().getDoubleExtra("lat",5);
+        double lng = getIntent().getDoubleExtra("lng",6);
+
         pSpinner = findViewById(R.id.sPrice);
         ArrayAdapter<CharSequence> pAdapter = ArrayAdapter.createFromResource(this, R.array.price_limit, android.R.layout.simple_spinner_item);
         pAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -56,6 +59,8 @@ public class AdvanceMenu extends AppCompatActivity {
                 }
                 filter = filter.concat("&maxprice=" + price);
                 Intent intent = new Intent(AdvanceMenu.this,MapActivity.class);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
                 intent.putExtra("filter",filter);
                 startActivity(intent);
             }
