@@ -11,56 +11,74 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class NearbyPlaces  extends AsyncTask<Object, String, String>
 {
-
-    String GooglePlaceData;
     GoogleMap gmap;
     String url;
     List<HashMap<String, String>>  nearbyPlace = null;
+    List<String> datalist = new LinkedList<>();
+    DataParser dataParser = new DataParser();
+    boolean next = true;
+    boolean isitempty;
+    int count =0;
+    int num;
+    Random random = new Random();
 
     @Override
     protected String doInBackground(Object... objects)
     {
         gmap = (GoogleMap)objects[0];
         url = (String)objects[1];
-
         RetrieveUrl retrieveUrl = new RetrieveUrl();
         try
         {
-            GooglePlaceData = retrieveUrl.readUrl(url);
+            datalist.add(retrieveUrl.readUrl(url));
+            url = dataParser.parsepage(datalist.get(0));
+            while(url != null || count < 2)
+            {
+                count++;
+                Thread.sleep(2000);  //Pagination requires a delay as pagetoken does not become available until after a delay
+                datalist.add(retrieveUrl.readUrl(url));
+                url = dataParser.parsepage(datalist.get(count));
+            }
         }
-        catch (IOException e)
+        catch (IOException | InterruptedException e)
         {
             e.printStackTrace();
         }
-        return GooglePlaceData;
+        return datalist.get(0);
     }
 
     @Override
     protected void onPostExecute(String data)
     {
-        Random random = new Random();
-        int num;
+        isitempty = false;
 
-        DataParser dataParser = new DataParser();
         nearbyPlace = dataParser.parse(data);
-        num = random.nextInt(nearbyPlace.size());
-        RandomPlace(nearbyPlace, num);
-        nearbyPlace.remove(num);
+        for(int i = 1; i <= count; i++)
+            nearbyPlace.addAll(dataParser.parse(datalist.get(i)));
+
+        if(nearbyPlace.size() != 0)
+        {
+            num = random.nextInt(nearbyPlace.size());
+            RandomPlace(nearbyPlace, num);
+            nearbyPlace.remove(num);
+        }
+        else
+            isitempty = true;
     }
 
     public void getnextRandom()
     {
-        Random random = new Random();
-        int num;
         num = random.nextInt(nearbyPlace.size());
         RandomPlace(nearbyPlace, num);
         nearbyPlace.remove(num);
-
+        if(nearbyPlace.size() == 0)
+            isitempty = true;
     }
 
     private void RandomPlace(List<HashMap<String, String>> nearbyPlaces, int num)
@@ -83,43 +101,13 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
 
         Marker mark = gmap.addMarker(markerOptions);
         mark.showInfoWindow();
-
     }
 
-    //to be finished later so more 60 results show up instead of 20
-    /*
-    private void nextpage(String jsonData, List<HashMap<String, String>> listplace)
+    public boolean checklist()
     {
-        String pagetoken = "";
-        JSONObject jsonObject;
-        String key;
-
-        try
-        {
-            jsonObject = new JSONObject(jsonData);
-            pagetoken = jsonObject.getString("next_page_token");
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-        if(pagetoken != null)
-        {
-            RetrieveUrl retrieveUrl = new RetrieveUrl();
-            StringBuilder Url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-            Url.append("pagetoken="+pagetoken);
-            key = Context.getResources().getString(R.string.places_api_key);
-            Url.append("&key=" + key);
-        }
+        if(isitempty)
+            return true;
+        else
+            return false;
     }
-
-    private void nextPages(String data, List<HashMap<String, String>> listplace)
-    {
-        List<HashMap<String, String>>  nearbyPlace = null;
-        DataParser dataParser = new DataParser();
-        nearbyPlace = dataParser.parse(data);
-        for (int i = 0; i < nearbyPlace.size();i++)
-            listplace.add(nearbyPlace.get(i));
-    }
-*/
 }

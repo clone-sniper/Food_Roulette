@@ -1,5 +1,7 @@
 package com.example.food_roulette;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,13 +76,42 @@ public class DataParser
 
         try
         {
-            jsonObject = new JSONObject(jsonData);
-            jsonArray = jsonObject.getJSONArray("results");
+                jsonObject = new JSONObject(jsonData);
+                jsonArray = jsonObject.getJSONArray("results");
+
+
         }
         catch (JSONException e)
         {
             e.printStackTrace();
         }
         return getPlaces(jsonArray);
+    }
+
+    public String parsepage(String jsonData)
+    {
+        String pagetoken = "";
+        JSONObject jsonObject;
+
+        try
+        {
+            jsonObject = new JSONObject(jsonData);
+            pagetoken = jsonObject.getString("next_page_token");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        if(pagetoken != "")
+        {
+            StringBuilder Url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+            Url.append("pagetoken="+pagetoken);
+            //key = Context.getResources().getString(R.string.places_api_key);
+            Url.append("&key=AIzaSyCeJEYnu7nqBgcMz8K9RetpVIotoAfm_d8");
+            return Url.toString();
+        }
+        else{
+            return null;
+        }
     }
 }

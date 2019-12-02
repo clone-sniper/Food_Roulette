@@ -53,17 +53,6 @@
             android:textStyle="bold"
             android:text="Radius Limit" />
 
-        <Spinner
-            android:id="@+id/sRadius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="178dp"
-            android:layout_marginLeft="178dp"
-            android:layout_marginTop="350dp"
-            ></Spinner>
 
         <Spinner
             android:id="@+id/sPrice"
@@ -76,6 +65,20 @@
             android:layout_marginLeft="180dp"
             android:layout_marginTop="238dp"
             ></Spinner>
+
+        <EditText
+            android:id="@+id/eRadius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="334dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:ems="10"
+            android:inputType="number"
+            android:hint="Enter Radius in Miles"/>
 
         <Button
             android:id="@+id/PickyFindBtn"

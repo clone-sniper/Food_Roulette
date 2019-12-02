@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class AdvanceMenu extends AppCompatActivity {
     private Button find;
     private Spinner pSpinner;
-    private Spinner rSpinner;
+    private EditText eRadius;
+    private int radius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,7 @@ public class AdvanceMenu extends AppCompatActivity {
         pAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pSpinner.setAdapter(pAdapter);
 
-        rSpinner = findViewById(R.id.sRadius);
-        ArrayAdapter<CharSequence> rAdapter = ArrayAdapter.createFromResource(this, R.array.radius_size, android.R.layout.simple_spinner_item);
-        rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        rSpinner.setAdapter(rAdapter);
+        eRadius = findViewById(R.id.eRadius);
 
         find = findViewById(R.id.PickyFindBtn);
         find.setOnClickListener(new View.OnClickListener()
@@ -38,7 +37,10 @@ public class AdvanceMenu extends AppCompatActivity {
             public void onClick(View v)
             {
                 String filter = "";
-                int radius = Integer.parseInt(rSpinner.getSelectedItem().toString());
+                if(eRadius.getText().toString().isEmpty())
+                    radius = 5;
+                else
+                    radius = Integer.parseInt(eRadius.getText().toString());
                 radius *= 1609;
                 filter = filter.concat("&radius=" + radius);
                 int price = 1;

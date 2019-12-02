@@ -1,6 +1,7 @@
 package com.example.food_roulette;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,8 +18,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button Randombtn;
     private double lat, lng;
     NearbyPlaces nearbyPlaces = new NearbyPlaces();
-
-
     String url = "";
     String type = "restaurant";
     String filter = "";
@@ -44,7 +43,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-                nearbyPlaces.getnextRandom();
+                if(nearbyPlaces.checklist())
+                {
+                    startActivity(new Intent(MapActivity.this,EndMenu.class));
+                }
+                else
+                {
+                    gmap.clear();
+                    nearbyPlaces.getnextRandom();
+                }
             }
         });
     }
@@ -56,13 +63,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gmap = googleMap;
         gmap.setMyLocationEnabled(true);
 
-        gmap.clear();
+
         Object dataTransfer[] = new Object[2];
         dataTransfer[0] = gmap;
         dataTransfer[1] = url;
         nearbyPlaces.execute(dataTransfer);
+        if(nearbyPlaces.checklist())
+        {
+            startActivity(new Intent(MapActivity.this,EndMenu.class));
+        }
     }
-
 
     private String getUrl(double lat, double lng, String type, String filter)
     {
