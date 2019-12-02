@@ -1,3 +1,2 @@
 # Food_Roulette
-app made on android studio using Java to randomly choose a restaurant within about a 10mile radius of your current location 
-though limited to the first 20 options on google map search
+An app made on android studio using Java to randomly choose a restaurant within about a 10mile radius of your current location with a price limit of $$. Second option allows user to have an option from $-$$$$ with a radius of their choice. App stores up to 60 restaurants to randomly choose from, while removing the current randomly selected one from the list if button to search for another is pressed.
