@@ -38,27 +38,13 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
             System.out.println(url);
             datalist.add(retrieveUrl.readUrl(url));
             url = dataParser.parsepage(datalist.get(0), key);
-            // While loop having issues when looking for restaurants with price limit of $ or when other price max at certain radius
-            /*while(url != null || count < 2)
+
+            while(url != null && count < 2)
             {
                 count++;
                 Thread.sleep(2000);  //Pagination requires a delay as pagetoken does not become available until after a delay
                 datalist.add(retrieveUrl.readUrl(url));
                 url = dataParser.parsepage(datalist.get(count), key);
-            }*/
-            if(url != null)
-            {
-                count++;
-                Thread.sleep(2000);  //Pagination requires a delay as pagetoken does not become available until after a delay
-                datalist.add(retrieveUrl.readUrl(url));
-                url = dataParser.parsepage(datalist.get(1), key);
-                System.out.println(url);
-                if(url != null)
-                {
-                    count++;
-                    Thread.sleep(2000);
-                    datalist.add(retrieveUrl.readUrl(url));
-                }
             }
 
         }
