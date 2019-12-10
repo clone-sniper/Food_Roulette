@@ -18,13 +18,12 @@ import java.util.Random;
 public class NearbyPlaces  extends AsyncTask<Object, String, String>
 {
     GoogleMap gmap;
-    String url;
+    String url, key;
     List<HashMap<String, String>>  nearbyPlace = null;
     List<String> datalist = new LinkedList<>();
     DataParser dataParser = new DataParser();
-    boolean next = true;
     boolean isitempty;
-    int count =0;
+    int count = 0;
     int num;
     Random random = new Random();
 
@@ -33,23 +32,45 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
     {
         gmap = (GoogleMap)objects[0];
         url = (String)objects[1];
+        key = (String)objects[2];
         RetrieveUrl retrieveUrl = new RetrieveUrl();
-        try
-        {
+        try {
+            System.out.println(url);
             datalist.add(retrieveUrl.readUrl(url));
-            url = dataParser.parsepage(datalist.get(0));
-            while(url != null || count < 2)
+            url = dataParser.parsepage(datalist.get(0), key);
+            // While loop having issues when looking for restaurants with price limit of $ or when other price max at certain radius
+            /*while(url != null || count < 2)
             {
                 count++;
                 Thread.sleep(2000);  //Pagination requires a delay as pagetoken does not become available until after a delay
                 datalist.add(retrieveUrl.readUrl(url));
-                url = dataParser.parsepage(datalist.get(count));
+                url = dataParser.parsepage(datalist.get(count), key);
+            }*/
+            if(url != null)
+            {
+                count++;
+                Thread.sleep(2000);  //Pagination requires a delay as pagetoken does not become available until after a delay
+                datalist.add(retrieveUrl.readUrl(url));
+                url = dataParser.parsepage(datalist.get(1), key);
+                System.out.println(url);
+                if(url != null)
+                {
+                    count++;
+                    Thread.sleep(2000);
+                    datalist.add(retrieveUrl.readUrl(url));
+                }
             }
+
         }
-        catch (IOException | InterruptedException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
         return datalist.get(0);
     }
 
@@ -109,5 +130,9 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
             return true;
         else
             return false;
+    }
+    public int getCount()
+    {
+        return nearbyPlace.size();
     }
 }

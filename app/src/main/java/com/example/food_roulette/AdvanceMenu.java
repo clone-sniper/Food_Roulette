@@ -14,6 +14,7 @@ public class AdvanceMenu extends AppCompatActivity {
     private Spinner pSpinner;
     private EditText eRadius;
     private int radius;
+    private int price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,6 @@ public class AdvanceMenu extends AppCompatActivity {
                     radius = Integer.parseInt(eRadius.getText().toString());
                 radius *= 1609;
                 filter = filter.concat("&radius=" + radius);
-                int price = 1;
                 switch(pSpinner.getSelectedItem().toString())
                 {
                     case "$$":

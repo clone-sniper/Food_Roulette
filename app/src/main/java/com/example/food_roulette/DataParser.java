@@ -15,8 +15,8 @@ public class DataParser
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson)
     {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
-        String placename = "na";
-        String vicinity = "na";
+        String placename = "";
+        String vicinity = "";
         String lat = "";
         String lng = "";
         String ref = "";
@@ -88,7 +88,7 @@ public class DataParser
         return getPlaces(jsonArray);
     }
 
-    public String parsepage(String jsonData)
+    public String parsepage(String jsonData, String key)
     {
         String pagetoken = "";
         JSONObject jsonObject;
@@ -106,8 +106,7 @@ public class DataParser
         {
             StringBuilder Url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
             Url.append("pagetoken="+pagetoken);
-            //key = Context.getResources().getString(R.string.places_api_key);
-            Url.append("&key=AIzaSyCeJEYnu7nqBgcMz8K9RetpVIotoAfm_d8");
+            Url.append("&key="+key);
             return Url.toString();
         }
         else{

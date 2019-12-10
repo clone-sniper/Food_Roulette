@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,6 +53,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 {
                     gmap.clear();
                     nearbyPlaces.getnextRandom();
+                    Toast toast = Toast.makeText(MapActivity.this,"There are " + nearbyPlaces.getCount() + " choices left in reserves", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP,0,150);
+                    toast.show();
                 }
             }
         });
@@ -64,9 +69,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gmap.setMyLocationEnabled(true);
 
 
-        Object dataTransfer[] = new Object[2];
+        Object dataTransfer[] = new Object[3];
         dataTransfer[0] = gmap;
         dataTransfer[1] = url;
+        dataTransfer[2] = getString(R.string.places_api_key);
         nearbyPlaces.execute(dataTransfer);
         if(nearbyPlaces.checklist())
         {
