@@ -40,7 +40,7 @@ public class StartMenu extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                String filter = "&radius=8000&maxprice=2";
+                String filter = "&radius=16000&maxprice=2";
                 Intent intent = new Intent(StartMenu.this,MapActivity.class);
                 intent.putExtra("filter",filter);
                 intent.putExtra("lat", lat);

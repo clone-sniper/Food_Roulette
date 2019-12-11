@@ -13,7 +13,7 @@ public class AdvanceMenu extends AppCompatActivity {
     private Button find;
     private Spinner pSpinner;
     private EditText eRadius;
-    private int radius;
+    private double radius;
     private int price;
 
     @Override
@@ -41,7 +41,7 @@ public class AdvanceMenu extends AppCompatActivity {
                 if(eRadius.getText().toString().isEmpty())
                     radius = 5;
                 else
-                    radius = Integer.parseInt(eRadius.getText().toString());
+                    radius = Double.parseDouble(eRadius.getText().toString());
                 radius *= 1609;
                 filter = filter.concat("&radius=" + radius);
                 switch(pSpinner.getSelectedItem().toString())

@@ -21,7 +21,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private double lat, lng;
     NearbyPlaces nearbyPlaces = new NearbyPlaces();
     String url = "";
-    String keyword = "restaurant";
+    String type = "restaurant";
     String filter = "";
 
     @SuppressLint("MissingPermission")
@@ -34,7 +34,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         filter = getIntent().getStringExtra("filter");
         lat = getIntent().getDoubleExtra("lat", 5);
         lng = getIntent().getDoubleExtra("lng", 6);
-        url = getUrl(lat, lng, keyword, filter);
+        url = getUrl(lat, lng, type, filter);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -84,7 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlaceUrl.append("location="+lat+","+lng);
-        googlePlaceUrl.append("&keyword="+keyword);
+        googlePlaceUrl.append("&type="+ type);
         googlePlaceUrl.append(filter);
         googlePlaceUrl.append("&opennow=true");
         googlePlaceUrl.append("&key="+getString(R.string.places_api_key));
