@@ -16,6 +16,7 @@ public class AdvanceMenu extends AppCompatActivity {
     private double radius;
     private int price;
 
+    //Allows user to set set a price limit and their choice of radius with it being defaulted to 5 miles if left blank.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

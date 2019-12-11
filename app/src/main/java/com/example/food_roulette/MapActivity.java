@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 {
@@ -24,6 +26,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     String type = "restaurant";
     String filter = "";
 
+    //On the creation of this activity, it will receive the location of the phone and the type of filter the user wants, and then sets up the map and button to be used later on
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +45,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Randombtn = findViewById(R.id.randomizer);
         Randombtn.setOnClickListener(new View.OnClickListener()
         {
+            //A button to reject the current randomly selected restaurant from the list and gets a new one
             @Override
             public void onClick(View v)
             {
@@ -61,6 +65,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    //executes these commands when the map is finally displayed on the phone, move screen to its location, creates and fill a object list, send it through the function, and then retrieves the first random restaurant and moves the screen to that restaurant
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -68,6 +73,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gmap = googleMap;
         gmap.setMyLocationEnabled(true);
 
+        LatLng latlng = new LatLng(lat, lng);
+        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
 
         Object dataTransfer[] = new Object[3];
         dataTransfer[0] = gmap;
@@ -80,6 +87,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    //Creates the basic url to retrieve the locations we desire by using the conditions of where the phone is located, what type of place we are looking for , and is it open currently
     private String getUrl(double lat, double lng, String type, String filter)
     {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");

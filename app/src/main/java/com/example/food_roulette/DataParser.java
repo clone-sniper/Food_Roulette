@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DataParser
 {
+    //Receives a index from an JSONArray and parses the data to create a HashMap to be returned
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson)
     {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
@@ -48,6 +49,7 @@ public class DataParser
             return googlePlaceMap;
     }
 
+    //Crates a HashMap List and adds to it through a for loop that goes through the JSONArray by calling the getPlace function. Returns a HashMap List
     private List<HashMap<String, String>> getPlaces(JSONArray jsonArray)
     {
         int count = jsonArray.length();
@@ -69,6 +71,7 @@ public class DataParser
         return placelist;
     }
 
+    //Receives the JSON data and retrieves the "results" to be stored in a JSONArray. Returns a HashMap List
     public List<HashMap<String, String>> parse(String jsonData)
     {
         JSONArray jsonArray = null;
@@ -88,6 +91,7 @@ public class DataParser
         return getPlaces(jsonArray);
     }
 
+    //Receives the JSON data in string form and searches if the next page token exist, if it does then it returns the url for the next page
     public String parsepage(String jsonData, String key)
     {
         String pagetoken = "";

@@ -27,6 +27,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
     int num;
     Random random = new Random();
 
+    //When the class is executed, it receives the data to use the google place search API to retrieve the information from the url it was given.
     @Override
     protected String doInBackground(Object... objects)
     {
@@ -60,6 +61,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
         return datalist.get(0);
     }
 
+    //Uses the data from the Url and a HashMap List is created
     @Override
     protected void onPostExecute(String data)
     {
@@ -79,6 +81,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
             isitempty = true;
     }
 
+    //User decided to reject the current restaurant so a new one is selected. It is then removed from the reserved so it won't be selected again.
     public void getnextRandom()
     {
         num = random.nextInt(nearbyPlace.size());
@@ -88,6 +91,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
             isitempty = true;
     }
 
+    //Creates a marker on the map and moves the screen to it while popping upa small screen with its name and location.
     private void RandomPlace(List<HashMap<String, String>> nearbyPlaces, int num)
     {
         MarkerOptions markerOptions = new MarkerOptions();
@@ -110,6 +114,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
         mark.showInfoWindow();
     }
 
+    //Checks if reserve list is empty
     public boolean checklist()
     {
         if(isitempty)
@@ -117,6 +122,7 @@ public class NearbyPlaces  extends AsyncTask<Object, String, String>
         else
             return false;
     }
+    //Uses in the Toast to show how many restaurants are left in reserve
     public int getCount()
     {
         return nearbyPlace.size();

@@ -34,7 +34,7 @@ public class StartMenu extends AppCompatActivity {
 
         getLoc();
 
-
+        //This button has the condition of $$ price limit in a 10mile/16Km radius and will start teh search
         indecisivebtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -49,7 +49,7 @@ public class StartMenu extends AppCompatActivity {
             }
         }
         );
-
+        //This button will start a new activity of the advance menu which will give the user a little more customization to their filter
         pickybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,11 +57,10 @@ public class StartMenu extends AppCompatActivity {
                 intent.putExtra("lat", lat);
                 intent.putExtra("lng", lng);
                 startActivity(intent);
-
             }
         });
     }
-
+    //Retrieves the phone location to be sends it to the main activity when the map is created
     @SuppressLint("MissingPermission")
     private void getLoc()
     {
